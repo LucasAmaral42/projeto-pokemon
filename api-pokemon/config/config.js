@@ -1,7 +1,6 @@
 var express = require('express');
 var consign = require('consign');
 var bodyParser = require('body-parser');
-var sql = require('mssql');
 
 module.exports = function (){
     var app = express();
@@ -10,7 +9,7 @@ module.exports = function (){
     app.use(bodyParser.json());
 
     consign()
-        .include('/app')
+        .include('routes')
         .include('infra')
         .into(app)
 
