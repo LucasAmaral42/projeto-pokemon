@@ -11,12 +11,12 @@ module.exports = function (app) {
         })
     })
 
-    app.get('/pokemon/', function(req,res){
+    app.get('/pokemon/:id', function(req,res){
 
         var conn = app.infra.connectionFactory();
         var pokemonDao = new app.infra.PokemonDao(conn);
 
-        var id = req.query.pokemon_id;
+        var id = req.param("id");
         console.log(id);
         
 
