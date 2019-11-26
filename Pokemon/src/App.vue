@@ -2,7 +2,6 @@
   <div class="">
       <menu-topo></menu-topo>
       <corpo></corpo>
-
   </div>
 </template>
 

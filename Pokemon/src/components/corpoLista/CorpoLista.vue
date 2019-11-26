@@ -6,41 +6,68 @@
         class="form-control mb-1"
         v-on:input="filtro = $event.target.value"
         placeholder="Busque o Pokemon por nome ou número...">
-
-        
     </div>  
       
     <div class="corpo shadow-lg py-4 px-3 bg-white">
         <ul class="card-columns mt-4">
-        <li class="" v-for="pokemon of pokemonsComFiltro">
-            <painel  
-            :numero="pokemon.row" 
-            :nome="pokemon.name"
-            :stat="pokemon.p100_CP_40"
-            :primaria="pokemon.type_1"
-            :secundaria="pokemon.type_2" 
-            :geracao="pokemon.generation">
+        <li class="" v-on:click="abrirModal(pokemon.pokemon_id)" v-for="pokemon of pokemonsComFiltro">
+            <painel
+              :numero="pokemon.row" 
+              :nome="pokemon.name"
+              :stat="pokemon.p100_CP_40"
+              :primaria="pokemon.type_1"
+              :secundaria="pokemon.type_2" 
+              :geracao="pokemon.generation">
             </painel>
+
         </li>
         </ul>
     </div>
 
+  <div v-on:click="fecharModal" id="modal" class="modal-container">
+    <div class="card">
+      <div class="card-body">
+        <modal :pokemon="pokemonC">
+        </modal>
+
+        <input class="btn btn-dark float-right" v-on:click="fecharModal" type="button" value="Fechar">
+      </div>
+    </div>
+  </div>
+  
   </div>
 </template>
 
 <script>
-import Painel from '../shared/painel/Painel.vue';
+  import Painel from '../shared/painel/Painel.vue';
+  import ModalPokemon from '../shared/modalPokemon/ModalPokemon.vue';
 
-export default {
-    
+  export default {
+
     components: {
-        'painel': Painel
+      'painel': Painel,
+      'modal': ModalPokemon
     },
 
     data(){
       return{
         pokemons : [],
+        pokemonC: [],
         filtro : ''
+      }
+    },
+
+    methods:{
+      abrirModal: function(id){
+        var modal = document.getElementById('modal');
+        modal.classList.add('mostrar');
+        this.$http.get(`http://localhost:3000/pokemon/?pokemon_id=${id}`)
+        .then(res => res.json())
+        .then(pokemons => this.pokemonC = pokemons, err => console.log(err))
+      },
+      fecharModal(){
+        var modal = document.getElementById('modal');
+        modal.classList.remove('mostrar');
       }
     },
 
@@ -60,12 +87,33 @@ export default {
         .then(res => res.json())
         .then(pokemons => this.pokemons = pokemons, err => console.log(err))
     }
-
-}
+  }
 </script>
 
 <style scoped>
     li{
         list-style-type: none;
+    }
+
+    .modal-container{
+        display: none;
+        background: rgba(0, 0, 0, 0.5);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .mostrar{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal{
+        background: #fff;
+        border-radius: 2em;
+        padding: 2em;
     }
 </style>

@@ -1,11 +1,16 @@
-function PagamentoDao(connection) {
+function PokemonDao(connection) {
     this._connection = connection;
 }
 
-PagamentoDao.prototype.lista = function(callback) {
+PokemonDao.prototype.lista = function(callback) {
     this._connection.query('SELECT * FROM pokemon',callback);
 }
 
+PokemonDao.prototype.buscaPorId = function (id,callback) {
+    this._connection.query("SELECT * FROM pokemon WHERE pokemon_id = ?",[id],callback);
+}
+
+
 module.exports = function(){
-    return PagamentoDao;
+    return PokemonDao;
 };
