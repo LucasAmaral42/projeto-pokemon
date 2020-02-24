@@ -1,18 +1,16 @@
-const sql = require('mssql');
-
-function PokemonDao(connection){
+function PokemonDao(connection) {
     this._connection = connection;
-    req = new sql.Request(this._connection);
 }
 
-PokemonDao.prototype.lista = function(callback){
-    this._connection.connect(function(err) {
-        if(err) console.log(err);
-
-        this.req.query('SELECT * FROM dbo.Pokemon', callback)
-    })
+PokemonDao.prototype.lista = function(callback) {
+    this._connection.query('SELECT * FROM pokemon',callback);
 }
 
-module.exports = function() {
+PokemonDao.prototype.buscaPorId = function (id,callback) {
+    this._connection.query("SELECT * FROM pokemon WHERE pokemon_id = ?",[id],callback);
+}
+
+
+module.exports = function(){
     return PokemonDao;
-}
+};

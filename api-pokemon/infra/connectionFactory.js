@@ -1,21 +1,14 @@
-const sql = require('mssql');
- 
-var dbConfig = {
-    server: "localhost",
-    database: "ProjetoRedFox",
-    user: "lucas",
-    password: "123",
-    port: 1433
-};
+var mysql  = require('mysql');
 
-function createDBConnection() {
-    var conn = new sql.ConnectionPool(dbConfig);
-    var req = new sql.Request(conn);
-
-    return conn;
+function createDBConnection(){
+		return mysql.createConnection({
+			host: 'localhost',
+			user: 'root',
+			password: '12345',
+			database: 'projetoredfox'
+		});
 }
 
-
 module.exports = function() {
-    return createDBConnection;
+	return createDBConnection;
 }
